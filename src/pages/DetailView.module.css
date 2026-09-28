@@ -1,0 +1,24 @@
+.detail {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pager {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.meta {
+  color: #888;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.explanation {
+  line-height: 1.6;
+}
