@@ -1,7 +1,7 @@
-import { Link, useParams } from 'react-router';
-import type { ApodPicture } from '../types';
-import { getImageUrl } from '../utils';
+import { Link, useParams, useLocation } from 'react-router';
+import type { ApodPicture, DetailNavState } from '../types';
 import styles from './DetailView.module.css';
+import { isVideoFile } from '../utils';
 
 interface DetailViewProps {
   pictures: ApodPicture[];
@@ -9,13 +9,14 @@ interface DetailViewProps {
 }
 
 export default function DetailView({ pictures, loading }: DetailViewProps) {
-  const { date } = useParams();
+    const { date } = useParams();
+  const location = useLocation();
 
   if (loading) return null;
 
-  const index = pictures.findIndex((picture) => picture.date === date);
+  const picture = pictures.find((p) => p.date === date);
 
-  if (index === -1) {
+  if (!picture) {
     return (
       <p>
         No picture found for {date}. <Link to="/">Back to the list</Link>
@@ -23,16 +24,42 @@ export default function DetailView({ pictures, loading }: DetailViewProps) {
     );
   }
 
-  const picture = pictures[index];
-  const prev = pictures[(index - 1 + pictures.length) % pictures.length];
-  const next = pictures[(index + 1) % pictures.length];
-  const imageUrl = getImageUrl(picture);
+  const navState = location.state as DetailNavState | null;
+  const sequence =
+    navState?.dates && navState.dates.includes(picture.date)
+      ? navState.dates
+      : pictures.map((p) => p.date);
+
+  const position = sequence.indexOf(picture.date);
+  const prevDate = sequence[(position - 1 + sequence.length) % sequence.length];
+  const nextDate = sequence[(position + 1) % sequence.length];
+  const nextState: DetailNavState = { dates: sequence };
+
+    let media;
+    if (picture.media_type === 'image') {
+        media = <img className={styles.media} src={picture.url} alt={picture.title} />;
+    } else if (isVideoFile(picture.url)) {
+        media = <video className={styles.media} src={picture.url} controls />;
+    } else {
+        media = (
+        <iframe
+            className={styles.media}
+            src={picture.url}
+            title={picture.title}
+            allow="fullscreen; picture-in-picture"
+            allowFullScreen
+        />
+        );
+    }
 
     return (
     <article className={styles.detail}>
-      <nav className={styles.pager}>
-        <Link to={`/apod/${prev.date}`}>← Previous</Link>
-        <Link to={`/apod/${next.date}`}>Next →</Link>
+        <nav className={styles.pager}>
+        <Link to={`/apod/${prevDate}`} state={nextState}>← Previous</Link>
+        <span className={styles.meta}>
+          {position + 1} of {sequence.length}
+        </span>
+        <Link to={`/apod/${nextDate}`} state={nextState}>Next →</Link>
       </nav>
 
       <h1>{picture.title}</h1>
@@ -41,15 +68,16 @@ export default function DetailView({ pictures, loading }: DetailViewProps) {
         {picture.copyright && ` · © ${picture.copyright}`}
       </p>
 
-      {imageUrl && <img className={styles.image} src={imageUrl} alt={picture.title} />}
+      {media}
 
-      {picture.media_type === 'video' && (
-        <p>
-          <a href={picture.url} target="_blank" rel="noreferrer">
-            Watch the video
-          </a>
-        </p>
-      )}
+{picture.media_type === 'video' && (
+  <p className={styles.meta}>
+    Video not playing?{' '}
+    <a href={picture.url} target="_blank" rel="noreferrer">
+      Open it in a new tab
+    </a>
+  </p>
+)}
 
       <p className={styles.explanation}>{picture.explanation}</p>
     </article>

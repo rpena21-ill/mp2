@@ -8,3 +8,7 @@ export interface ApodPicture {
   copyright?: string;
   thumbnail_url?: string;
 }
+
+export interface DetailNavState {
+  dates: string[];
+}

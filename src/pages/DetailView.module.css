@@ -10,13 +10,19 @@
 }
 
 .meta {
-  color: #888;
+  color: var(--muted);
 }
 
-.image {
+.media {
+  display: block;
   width: 100%;
   height: auto;
+  border: 0;
   border-radius: 8px;
+}
+
+iframe.media {
+  aspect-ratio: 16 / 9;
 }
 
 .explanation {
