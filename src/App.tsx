@@ -39,7 +39,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<ListView pictures={pictures}/>} />
-        <Route path="/gallery" element={<GalleryView />} />
+        <Route path="/gallery" element={<GalleryView pictures={pictures} />} />
         <Route path="/apod/:date" element={<DetailView />} />
       </Routes>
 
