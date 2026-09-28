@@ -18,8 +18,7 @@
   flex: 1 1 240px;
 }
 
-.control input,
-.control select {
+.control input, .control select {
   padding: 8px 10px;
   border-radius: 6px;
   border: 1px solid var(--border);

@@ -4,7 +4,7 @@ export interface ApodPicture {
   explanation: string;
   url: string;
   hdurl?: string;
-  media_type: 'image' | 'video';
+  media_type: "image" | "video";
   copyright?: string;
   thumbnail_url?: string;
 }

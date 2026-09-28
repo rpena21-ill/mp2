@@ -1,11 +1,11 @@
-import { Routes, Route, Link, NavLink } from 'react-router'
-import styles from './App.module.css';
-import DetailView from './pages/DetailView.tsx'
-import GalleryView from './pages/GalleryView.tsx'
-import ListView from './pages/ListView.tsx'
-import { useState, useEffect } from 'react'
-import { fetchPictures } from './api/apod.ts'
-import type { ApodPicture } from './types.ts'
+import { Routes, Route, Link, NavLink } from "react-router";
+import styles from "./App.module.css";
+import DetailView from "./pages/DetailView.tsx";
+import GalleryView from "./pages/GalleryView.tsx";
+import ListView from "./pages/ListView.tsx";
+import { useState, useEffect } from "react";
+import { fetchPictures } from "./api/apod.ts";
+import type { ApodPicture } from "./types.ts";
 
 function App() {
   const [pictures, setPictures] = useState<ApodPicture[]>([]);
@@ -20,7 +20,9 @@ function App() {
 
     fetchPictures(startDate)
       .then((data) => setPictures(data))
-      .catch(() => setError('Could not load pictures from NASA. Please try again later.'))
+      .catch(() =>
+        setError("Could not load pictures from NASA. Please try again later."),
+      )
       .finally(() => setLoading(false));
   }, []);
 
@@ -33,12 +35,23 @@ function App() {
         <nav>
           <ul className={styles.nav}>
             <li>
-              <NavLink to="/" end className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.link
+                }
+              >
                 List
               </NavLink>
             </li>
             <li>
-              <NavLink to="/gallery" className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}>
+              <NavLink
+                to="/gallery"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : styles.link
+                }
+              >
                 Gallery
               </NavLink>
             </li>
@@ -52,12 +65,18 @@ function App() {
 
         <Routes>
           <Route path="/" element={<ListView pictures={pictures} />} />
-          <Route path="/gallery" element={<GalleryView pictures={pictures} />} />
-          <Route path="/apod/:date" element={<DetailView pictures={pictures} loading={loading} />} />
+          <Route
+            path="/gallery"
+            element={<GalleryView pictures={pictures} />}
+          />
+          <Route
+            path="/apod/:date"
+            element={<DetailView pictures={pictures} loading={loading} />}
+          />
         </Routes>
       </main>
     </>
   );
 }
 
-export default App
+export default App;
