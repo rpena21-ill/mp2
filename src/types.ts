@@ -7,6 +7,8 @@ export interface ApodPicture {
   media_type: "image" | "video";
   copyright?: string;
   thumbnail_url?: string;
+  alt?: string;
+  permalink?: string;
 }
 
 export interface DetailNavState {

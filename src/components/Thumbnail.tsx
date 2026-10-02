@@ -16,7 +16,7 @@ export default function Thumbnail({ picture, className = "" }: ThumbnailProps) {
       <img
         className={classes}
         src={imageUrl}
-        alt={picture.title}
+        alt={picture.alt ?? picture.title}
         loading="lazy"
       />
     );

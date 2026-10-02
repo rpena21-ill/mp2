@@ -25,7 +25,10 @@ export default function DetailView({ pictures, loading }: DetailViewProps) {
   }
 
   const navState = location.state as DetailNavState | null;
-  const sequence = navState?.dates && navState.dates.includes(picture.date) ? navState.dates : pictures.map((p) => p.date);
+  const sequence =
+    navState?.dates && navState.dates.includes(picture.date)
+      ? navState.dates
+      : pictures.map((p) => p.date);
 
   const position = sequence.indexOf(picture.date);
   const prevDate = sequence[(position - 1 + sequence.length) % sequence.length];
@@ -35,7 +38,11 @@ export default function DetailView({ pictures, loading }: DetailViewProps) {
   let media;
   if (picture.media_type === "image") {
     media = (
-      <img className={styles.media} src={picture.url} alt={picture.title} />
+      <img
+        className={styles.media}
+        src={picture.url}
+        alt={picture.alt ?? picture.title}
+      />
     );
   } else if (isVideoFile(picture.url)) {
     media = <video className={styles.media} src={picture.url} controls />;
@@ -76,7 +83,11 @@ export default function DetailView({ pictures, loading }: DetailViewProps) {
       {picture.media_type === "video" && (
         <p className={styles.meta}>
           Video not playing?{" "}
-          <a href={picture.url} target="_blank" rel="noreferrer">
+          <a
+            href={picture.permalink ?? picture.url}
+            target="_blank"
+            rel="noreferrer"
+          >
             Open it in a new tab
           </a>
         </p>

@@ -13,12 +13,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const start = new Date();
-    start.setDate(1);
-    start.setMonth(start.getMonth() - 5);
-    const startDate = start.toISOString().slice(0, 10);
-
-    fetchPictures(startDate)
+    fetchPictures()
       .then((data) => setPictures(data))
       .catch(() =>
         setError("Could not load pictures from NASA. Please try again later."),

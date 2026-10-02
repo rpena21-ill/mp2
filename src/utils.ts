@@ -1,7 +1,7 @@
 import type { ApodPicture } from "./types";
 
 export function getYouTubeThumbnail(url: string): string | undefined {
-  const match = url.match(/youtube\.com\/embed\/([\w-]+)/);
+  const match = url.match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]+)/);
   return match
     ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`
     : undefined;
